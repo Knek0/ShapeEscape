@@ -1,5 +1,9 @@
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Animations;
 using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
+using static UnityEngine.GraphicsBuffer;
 
 public class Player : MonoBehaviour
 {
@@ -9,6 +13,9 @@ public class Player : MonoBehaviour
     // movement along X and Y axes
     private float movementX;
     private float movementY;
+
+    // mouse position
+    private Vector2 mouseScreenPos;
 
     //input direction
     public Vector3 inputDirection { get; private set; }
@@ -30,6 +37,15 @@ public class Player : MonoBehaviour
 
         // Apply force to the Rigidbody to move the player.
         rb.AddForce(movement * speed);
+
+        mouseScreenPos = Mouse.current.position.ReadValue();
+
+        Vector3 mouseWorld = Camera.main.ScreenToWorldPoint(mouseScreenPos);
+        mouseWorld.z = transform.position.z;
+        Vector2 dir = (mouseWorld - transform.position).normalized;
+        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+        angle -= 90f; // Adjusting angle to point the top of the sprite towards the mouse
+        transform.rotation = Quaternion.Euler(0f, 0f, angle);
     }
 
     public void OnMove(InputValue movementValue)
@@ -41,5 +57,10 @@ public class Player : MonoBehaviour
         movementX = movementVector.x;
         movementY = movementVector.y;
         inputDirection = new Vector2(movementX, movementY);
+    }
+
+    public void OnAttack(InputValue attackValue)
+    {
+        Instantiate(Resources.Load("Prefabs/Bullet"), transform.position, transform.rotation);
     }
 }
