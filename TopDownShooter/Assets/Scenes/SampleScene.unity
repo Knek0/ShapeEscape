@@ -820,6 +820,10 @@ PrefabInstance:
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5498345227361620183, guid: e11b43eb87a9d6144ac55d47fb55e612, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 5498345227361620183, guid: e11b43eb87a9d6144ac55d47fb55e612, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -863,10 +867,22 @@ PrefabInstance:
       propertyPath: speed
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 6266907816222122546, guid: e11b43eb87a9d6144ac55d47fb55e612, type: 3}
+      propertyPath: Bullet
+      value: 
+      objectReference: {fileID: 2136209230793914745, guid: 149f77a15380bff42b53b0d19946438a, type: 3}
+    - target: {fileID: 6266907816222122546, guid: e11b43eb87a9d6144ac55d47fb55e612, type: 3}
+      propertyPath: RotateTarget
+      value: 
+      objectReference: {fileID: 1945392122}
     - target: {fileID: 6723872590224587415, guid: e11b43eb87a9d6144ac55d47fb55e612, type: 3}
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 8305799370114497208, guid: e11b43eb87a9d6144ac55d47fb55e612, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 7482667652216324306, guid: 75f5f34dc1b5347e0b8351032682f224, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

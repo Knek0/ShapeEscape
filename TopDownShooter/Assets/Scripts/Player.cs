@@ -1,21 +1,20 @@
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Animations;
 using UnityEngine.InputSystem;
-using UnityEngine.UIElements;
-using static UnityEngine.GraphicsBuffer;
 
 public class Player : MonoBehaviour
 {
+    // Bullet prefab to be instantiated when shooting
+    public GameObject Bullet;
+
     // Speed at which the player moves
-    public float speed = 0;
+    public float speed = 5;
+
+    // Speed at which the player rotates
+    public float rotationSpeed = 10;
 
     // movement along X and Y axes
     private float movementX;
     private float movementY;
-
-    // mouse position
-    private Vector2 mouseScreenPos;
 
     //input direction
     public Vector3 inputDirection { get; private set; }
@@ -38,14 +37,23 @@ public class Player : MonoBehaviour
         // Apply force to the Rigidbody to move the player.
         rb.AddForce(movement * speed);
 
-        mouseScreenPos = Mouse.current.position.ReadValue();
+        //rotation
+        Vector2 dir = new Vector2(movementX, movementY);
 
-        Vector3 mouseWorld = Camera.main.ScreenToWorldPoint(mouseScreenPos);
-        mouseWorld.z = transform.position.z;
-        Vector2 dir = (mouseWorld - transform.position).normalized;
+        // Dead zone
+        if (dir.sqrMagnitude < 0.01f)
+            return;
+
+        if (movement == Vector2.zero)
+            return;
+
         float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-        angle -= 90f; // Adjusting angle to point the top of the sprite towards the mouse
-        transform.rotation = Quaternion.Euler(0f, 0f, angle);
+        Quaternion targetRotation = Quaternion.Euler(0, 0, angle - 90f);
+        transform.rotation = Quaternion.Slerp(
+            transform.rotation,
+            targetRotation,
+            rotationSpeed * Time.deltaTime
+        );
     }
 
     public void OnMove(InputValue movementValue)
@@ -57,10 +65,5 @@ public class Player : MonoBehaviour
         movementX = movementVector.x;
         movementY = movementVector.y;
         inputDirection = new Vector2(movementX, movementY);
-    }
-
-    public void OnAttack(InputValue attackValue)
-    {
-        Instantiate(Resources.Load("Prefabs/Bullet"), transform.position, transform.rotation);
     }
 }
