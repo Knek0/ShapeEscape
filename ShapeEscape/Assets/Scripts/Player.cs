@@ -2,15 +2,12 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
-{
-    // Bullet prefab to be instantiated when shooting
-    public GameObject Bullet;
-
+{ 
     // Speed at which the player moves
-    public float speed = 5;
+    public float speed = 0;
 
     // Speed at which the player rotates
-    public float rotationSpeed = 10;
+    public float rotationSpeed = 0;
 
     // movement along X and Y axes
     private float movementX;
@@ -44,9 +41,11 @@ public class Player : MonoBehaviour
         if (dir.sqrMagnitude < 0.01f)
             return;
 
+        // Don't rotate if no movement
         if (movement == Vector2.zero)
             return;
 
+        // Calculate the angle and rotate towards the movement direction.
         float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
         Quaternion targetRotation = Quaternion.Euler(0, 0, angle - 90f);
         transform.rotation = Quaternion.Slerp(

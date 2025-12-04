@@ -5,8 +5,8 @@ public class Enemy : MonoBehaviour
     // Speed at which the enemy moves
     public float speed = 0;
 
-    // reference to the player object's transform
-    public Transform player;
+    // player transform
+    private Transform player;
 
     // rigidbody of the enemy
     private Rigidbody2D rb;
@@ -15,11 +15,15 @@ public class Enemy : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        GameObject playerPostion = GameObject.FindGameObjectWithTag("Player");
+        player = playerPostion.transform;
     }
 
-    // Update is called once per frame
+    // FixedUpdate is called once per frame
     void FixedUpdate()
     {
+        // Move towards the player
+        if (player == null) return;
         Vector3 pos = Vector3.MoveTowards(transform.position, player.position, speed * Time.deltaTime);
         rb.MovePosition(pos);
     }

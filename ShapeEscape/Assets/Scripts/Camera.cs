@@ -1,7 +1,7 @@
 using UnityEngine;
 public class camera : MonoBehaviour
 {
-    //reference to the player object
+    //reference to player object
     public GameObject player;
 
     //offset between camera and player

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1235006584573541447}
   - component: {fileID: -679041911043707400}
   - component: {fileID: -4269569864000506200}
-  - component: {fileID: -3629850398502319966}
+  - component: {fileID: 111155549254770823}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 2460348618182124884}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.28, y: -2.94, z: 0}
+  m_LocalPosition: {x: 4, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -143,7 +143,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
   speed: 3
   player: {fileID: 0}
---- !u!50 &-3629850398502319966
+--- !u!50 &111155549254770823
 Rigidbody2D:
   serializedVersion: 5
   m_ObjectHideFlags: 0
