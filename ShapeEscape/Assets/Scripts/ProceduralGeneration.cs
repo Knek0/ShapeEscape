@@ -14,8 +14,7 @@ public class ProceduralGeneration : MonoBehaviour
     public float spawnWidth = 10f;          
     public float moveThreshold = 1f;     
     public int itemsPerSpawn = 3;
-    public float idleTimer = 5f;
-    public float idleThreshold = 0.5f;
+    private float enemyTimer = 3f;
 
     // Culling parameters
     public float cullDistance = 25f;
@@ -37,23 +36,12 @@ public class ProceduralGeneration : MonoBehaviour
 
         Vector2 movementDir = GetMovementDirection();
 
-        bool moving = movementDir.sqrMagnitude > idleThreshold * idleThreshold;
+        enemyTimer += Time.deltaTime;
 
-        // If player is idle, spawn more enemies
-        if (!moving) {
-
-            idleTimer += Time.deltaTime;
-
-            if (idleTimer >= idleThreshold)
-            {
-                SpawnIdle();
-                idleTimer = 0f;
-            }
-
-        }
-        else
+        if (enemyTimer >= 4)
         {
-            idleTimer = 0f;
+            SpawnIdle();
+            enemyTimer = 0f;
         }
 
         // Only generate when player moves
@@ -79,7 +67,7 @@ public class ProceduralGeneration : MonoBehaviour
         for (int i = 0; i < itemsPerSpawn; i++)
         {
             // Pick wall or enemy
-            GameObject prefab = (Random.value > 0.05f) ? wallPrefab : enemyPrefab;
+            GameObject prefab = (Random.value > 0.08f) ? wallPrefab : enemyPrefab;
 
             // Calculate spawn position
             Vector2 spawnPos = (Vector2)player.position + direction * spawnDistanceAhead;
