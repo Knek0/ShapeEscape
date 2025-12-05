@@ -14,6 +14,8 @@ public class ProceduralGeneration : MonoBehaviour
     public float spawnWidth = 10f;          
     public float moveThreshold = 1f;     
     public int itemsPerSpawn = 3;
+    public float idleTimer = 5f;
+    public float idleThreshold = 0.5f;
 
     // Culling parameters
     public float cullDistance = 25f;
@@ -31,7 +33,28 @@ public class ProceduralGeneration : MonoBehaviour
 
     void Update()
     {
+        if (player == null) return;
+
         Vector2 movementDir = GetMovementDirection();
+
+        bool moving = movementDir.sqrMagnitude > idleThreshold * idleThreshold;
+
+        // If player is idle, spawn more enemies
+        if (!moving) {
+
+            idleTimer += Time.deltaTime;
+
+            if (idleTimer >= idleThreshold)
+            {
+                SpawnIdle();
+                idleTimer = 0f;
+            }
+
+        }
+        else
+        {
+            idleTimer = 0f;
+        }
 
         // Only generate when player moves
         if (movementDir.sqrMagnitude > 0.1f &&
@@ -66,6 +89,19 @@ public class ProceduralGeneration : MonoBehaviour
             spawnPos += perp * Random.Range(-spawnWidth / 2f, spawnWidth / 2f);
 
             GameObject obj = Instantiate(prefab, spawnPos, Quaternion.identity);
+            spawnedObjects.Add(obj);
+        }
+    }
+
+    private void SpawnIdle()
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            // Spawn idle enemies
+            Vector2 randomOffset = Random.insideUnitCircle.normalized * spawnDistanceAhead;
+            Vector2 spawnPos = (Vector2)player.position + randomOffset;
+
+            GameObject obj = Instantiate(enemyPrefab, spawnPos, Quaternion.identity);
             spawnedObjects.Add(obj);
         }
     }

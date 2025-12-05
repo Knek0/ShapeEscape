@@ -4,10 +4,10 @@ using UnityEngine.InputSystem;
 public class Player : MonoBehaviour
 { 
     // Speed at which the player moves
-    public float speed = 0;
+    public float speed = 30;
 
     // Speed at which the player rotates
-    public float rotationSpeed = 0;
+    public float rotationSpeed = 5;
 
     // movement along X and Y axes
     private float movementX;
@@ -26,7 +26,7 @@ public class Player : MonoBehaviour
     }
 
     // FixedUpdate is called once per frame
-    private void Update()
+    private void FixedUpdate()
     {
         // Create a 3D movement vector using the X and Y inputs.
         Vector2 movement = new(movementX, movementY);
