@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 public class Player : MonoBehaviour
 { 
     // Speed at which the player moves
-    public float speed = 15;
+    public float speed = 40;
 
     // Speed at which the player rotates
     public float rotationSpeed = 5;

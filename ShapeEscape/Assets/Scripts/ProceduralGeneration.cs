@@ -38,9 +38,9 @@ public class ProceduralGeneration : MonoBehaviour
 
         enemyTimer += Time.deltaTime;
 
-        if (enemyTimer >= 4)
+        if (enemyTimer >= 2)
         {
-            SpawnIdle();
+            SpawnEnemies();
             enemyTimer = 0f;
         }
 
@@ -67,7 +67,7 @@ public class ProceduralGeneration : MonoBehaviour
         for (int i = 0; i < itemsPerSpawn; i++)
         {
             // Pick wall or enemy
-            GameObject prefab = (Random.value > 0.08f) ? wallPrefab : enemyPrefab;
+            GameObject prefab = (Random.value > 0.02f) ? wallPrefab : enemyPrefab;
 
             // Calculate spawn position
             Vector2 spawnPos = (Vector2)player.position + direction * spawnDistanceAhead;
@@ -81,7 +81,7 @@ public class ProceduralGeneration : MonoBehaviour
         }
     }
 
-    private void SpawnIdle()
+    private void SpawnEnemies()
     {
         for (int i = 0; i < 3; i++)
         {
