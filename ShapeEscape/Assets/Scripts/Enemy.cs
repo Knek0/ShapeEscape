@@ -2,8 +2,11 @@ using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
 public class Enemy : MonoBehaviour
 {
+    // Reference to PlayerDie script to check game over state
+    public PlayerDie playerDieScript;
+
     // Speed at which the enemy moves
-    public float speed = 0;
+    public float speed = 3;
 
     // player transform
     private Transform player;
@@ -23,7 +26,6 @@ public class Enemy : MonoBehaviour
     void FixedUpdate()
     {
         // Move towards the player
-        if (player == null) return;
         Vector3 pos = Vector3.MoveTowards(transform.position, player.position, speed * Time.deltaTime);
         rb.MovePosition(pos);
     }

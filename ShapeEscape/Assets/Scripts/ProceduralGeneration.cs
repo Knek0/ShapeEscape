@@ -3,6 +3,11 @@ using System.Collections.Generic;
 
 public class ProceduralGeneration : MonoBehaviour
 {
+
+    // Reference to PlayerDie script to check game over state
+    public PlayerDie playerDieScript;
+
+    // Reference to the player transform
     public Transform player;
 
     // Prefabs to spawn
@@ -19,7 +24,7 @@ public class ProceduralGeneration : MonoBehaviour
     // Culling parameters
     public float cullDistance = 25f;
 
-    // spawn position tracking
+    // Spawn position tracking
     private Vector3 lastSpawnPos;
     private List<GameObject> spawnedObjects = new List<GameObject>();
 
@@ -32,13 +37,13 @@ public class ProceduralGeneration : MonoBehaviour
 
     void Update()
     {
-        if (player == null) return;
+        if (PlayerDie.gameOver) return;
 
         Vector2 movementDir = GetMovementDirection();
 
         enemyTimer += Time.deltaTime;
 
-        if (enemyTimer >= 2)
+        if (enemyTimer >= 3)
         {
             SpawnEnemies();
             enemyTimer = 0f;
@@ -67,7 +72,7 @@ public class ProceduralGeneration : MonoBehaviour
         for (int i = 0; i < itemsPerSpawn; i++)
         {
             // Pick wall or enemy
-            GameObject prefab = (Random.value > 0.02f) ? wallPrefab : enemyPrefab;
+            GameObject prefab = (Random.value > 0.05f) ? wallPrefab : enemyPrefab;
 
             // Calculate spawn position
             Vector2 spawnPos = (Vector2)player.position + direction * spawnDistanceAhead;
