@@ -3,10 +3,6 @@ using System.Collections.Generic;
 
 public class ProceduralGeneration : MonoBehaviour
 {
-
-    // Reference to PlayerDie script to check game over state
-    public PlayerDie playerDieScript;
-
     // Reference to the player transform
     public Transform player;
 

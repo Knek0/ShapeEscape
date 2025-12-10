@@ -1,11 +1,12 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using TMPro;
 using UnityEngine.InputSystem;
 
 public class PlayerDie : MonoBehaviour
 {
     public GameObject gameOverText;
+    public GameObject deathParticles;
 
     public static bool gameOver = false;
 
@@ -31,14 +32,15 @@ public class PlayerDie : MonoBehaviour
         gameOver = false;
     }
 
-    private void Die()
+    private IEnumerator DieCoroutine()
     {
         // Prevents multiple death triggers
-        if (gameOver) return;
+        if (gameOver) yield break;
         gameOver = true;
 
-        // Show game over text
-        gameOverText.SetActive(true);
+        // Spawn death particles
+        GameObject particles = Instantiate(deathParticles, transform.position, Quaternion.identity);
+        particles.GetComponent<ParticleSystem>().Play();
 
         // Disable player movement and physics
         GetComponent<Rigidbody2D>().simulated = false;
@@ -46,8 +48,19 @@ public class PlayerDie : MonoBehaviour
         // Hide sprite
         GetComponent<SpriteRenderer>().enabled = false;
 
+        // wait before showing game over UI
+        yield return new WaitForSecondsRealtime(1.2f);
+
+        // Show game over text
+        gameOverText.SetActive(true);
+
         // Listen for restart
         anyKey.performed += Restart;
+    }
+
+    private void Die()
+    {
+        StartCoroutine(DieCoroutine());
     }
 
     private void Restart(InputAction.CallbackContext ctx)
