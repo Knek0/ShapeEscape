@@ -61,10 +61,12 @@ public class PlayerDie : MonoBehaviour
     private void Die()
     {
         StartCoroutine(DieCoroutine());
+        Object.FindFirstObjectByType<Music>().OnPlayerDeath();
     }
 
     private void Restart(InputAction.CallbackContext ctx)
     {
+        Object.FindFirstObjectByType<Music>().OnRestart();
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
