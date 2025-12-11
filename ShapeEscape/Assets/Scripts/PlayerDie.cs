@@ -5,11 +5,18 @@ using UnityEngine.InputSystem;
 
 public class PlayerDie : MonoBehaviour
 {
+    // Player Audio 
+    public AudioClip deathSound;
+    private AudioSource audioSource;
+
+    // Game Over UI elements
     public GameObject gameOverText;
     public GameObject deathParticles;
 
+    // Static flag to indicate if the game is over
     public static bool gameOver = false;
 
+    // Input action for any key press
     public InputAction anyKey;
 
     private void OnEnable()
@@ -30,6 +37,7 @@ public class PlayerDie : MonoBehaviour
     private void Awake()
     {
         gameOver = false;
+        audioSource = GetComponent<AudioSource>();
     }
 
     private IEnumerator DieCoroutine()
@@ -60,6 +68,7 @@ public class PlayerDie : MonoBehaviour
 
     private void Die()
     {
+        audioSource.PlayOneShot(deathSound);
         StartCoroutine(DieCoroutine());
         Object.FindFirstObjectByType<Music>().OnPlayerDeath();
     }

@@ -655,7 +655,7 @@ Camera:
   far clip plane: 1000
   field of view: 34
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 6
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -6449,6 +6449,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67d7f3faf68d9aa468945b9a8bd16bbe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  deathSound: {fileID: 8300000, guid: f7b4a52a7ff48c74dbd7aedfc5e40741, type: 3}
   gameOverText: {fileID: 366902487}
   deathParticles: {fileID: 1270351256}
   anyKey:
@@ -6480,8 +6481,8 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 1
+  m_PlayOnAwake: 0
+  m_Volume: 0.5
   m_Pitch: 1
   Loop: 0
   Mute: 0
