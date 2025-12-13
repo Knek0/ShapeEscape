@@ -1,58 +1,90 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
-{ 
+{
+    // Audiosource
+    private AudioSource audioSource;
+
     // Speed at which the player moves
     public float speed = 40;
 
     // Speed at which the player rotates
     public float rotationSpeed = 5;
 
-    // movement along X and Y axes
+    // Dashing
+    public AudioClip dashSound;
+    public float dashTime = 0.3f;
+    public float dashCooldown = 5f;
+    public float dashSpeed = 25f;
+    private bool canDash = true;
+    private bool isDashing = false;
+    public TrailRenderer dashTrail;
+
+    // Movement along X and Y axes
     private float movementX;
     private float movementY;
+    Vector2 movement;
 
-    //input direction
+    // Layers
+    private int playerLayer;
+    private int enemyLayer;
+
+    // Input direction
     public Vector3 inputDirection { get; private set; }
 
-    // rigidbody of the player
+    // Rigidbody of the player
     private Rigidbody2D rb;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        playerLayer = LayerMask.NameToLayer("Player");
+        enemyLayer = LayerMask.NameToLayer("Enemy");
+        Physics2D.IgnoreLayerCollision(playerLayer, enemyLayer, false);
+        dashTrail.emitting = false;
+    }
+
+    // Gets audioSource on Awake
+    private void Awake()
+    {
+        audioSource = GetComponent<AudioSource>();
     }
 
     // FixedUpdate is called once per frame
     private void FixedUpdate()
     {
-        // Create a 3D movement vector using the X and Y inputs.
-        Vector2 movement = new(movementX, movementY);
+        if (isDashing) return;
 
-        // Apply force to the Rigidbody to move the player.
-        rb.AddForce(movement * speed);
+        else
+        {   // Movement vector using the X and Y inputs.
+            movement = new(movementX, movementY);
 
-        //rotation
-        Vector2 dir = new Vector2(movementX, movementY);
+            // Apply force to the Rigidbody to move the player.
+            rb.AddForce(movement * speed);
 
-        // Dead zone
-        if (dir.sqrMagnitude < 0.01f)
-            return;
+            // Rotation
+            Vector2 dir = new Vector2(movementX, movementY);
 
-        // Don't rotate if no movement
-        if (movement == Vector2.zero)
-            return;
+            // Dead zone
+            if (dir.sqrMagnitude < 0.01f)
+                return;
 
-        // Calculate the angle and rotate towards the movement direction.
-        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-        Quaternion targetRotation = Quaternion.Euler(0, 0, angle - 90f);
-        transform.rotation = Quaternion.Slerp(
-            transform.rotation,
-            targetRotation,
-            rotationSpeed * Time.deltaTime
-        );
+            // Don't rotate if no movement
+            if (movement == Vector2.zero)
+                return;
+
+            // Calculate the angle and rotate towards the movement direction.
+            float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+            Quaternion targetRotation = Quaternion.Euler(0, 0, angle - 90f);
+            transform.rotation = Quaternion.Slerp(
+                transform.rotation,
+                targetRotation,
+                rotationSpeed * Time.deltaTime
+            );
+        }
     }
 
     public void OnMove(InputValue movementValue)
@@ -64,5 +96,58 @@ public class Player : MonoBehaviour
         movementX = movementVector.x;
         movementY = movementVector.y;
         inputDirection = new Vector2(movementX, movementY);
+    }
+
+    public void OnJump(InputValue value)
+    {
+        // Dash on space pressed
+        if (canDash)
+        {
+            StartCoroutine(Dash());
+        }
+    }
+
+    private IEnumerator Dash()
+    {
+        // Dashing
+        canDash = false;
+        isDashing = true;
+
+        // Direction of dash
+        Vector2 dashDirection = new Vector2(movementX, movementY).normalized;
+
+        // Dash in direction of rotation if no movement input detected
+        if (dashDirection == Vector2.zero)
+        {
+            dashDirection = transform.up.normalized;
+        }
+
+        // Ignore collisions with enemies
+        Physics2D.IgnoreLayerCollision(playerLayer, enemyLayer, true);
+
+        // Enable Dash trail
+        dashTrail.Clear();
+        dashTrail.emitting = true;
+
+        // Apply force
+        rb.linearVelocity = dashDirection * dashSpeed;
+        isDashing = false;
+
+        // Play dash sound and dash particle effect
+        audioSource.PlayOneShot(dashSound);
+
+        // Dash time
+        yield return new WaitForSeconds(dashTime);
+
+        // Disable dash trail
+        dashTrail.emitting = false;
+        isDashing = false;
+
+        // Collision with Enemies back on
+        Physics2D.IgnoreLayerCollision(playerLayer, enemyLayer, false);
+
+        // Dash cooldown
+        yield return new WaitForSeconds(dashCooldown);
+        canDash = true;
     }
 }

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: -679041911043707400}
   - component: {fileID: -4269569864000506200}
   - component: {fileID: 111155549254770823}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Enemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -141,6 +141,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b988618b50d9e444aea880eceb28083, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
+  playerDieScript: {fileID: 0}
   speed: 3
 --- !u!50 &111155549254770823
 Rigidbody2D:
