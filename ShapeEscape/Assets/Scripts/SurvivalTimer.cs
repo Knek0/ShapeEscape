@@ -41,6 +41,7 @@ public class SurvivalTimer : MonoBehaviour
         }
     }
 
+    // Continuously checks for new high score
     void CheckForNewHighScore()
     {
         if (timer > bestScore)
