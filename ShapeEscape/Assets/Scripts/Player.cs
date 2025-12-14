@@ -15,8 +15,8 @@ public class Player : MonoBehaviour
 
     // Dashing
     public AudioClip dashSound;
-    public float dashTime = 0.3f;
-    public float dashCooldown = 5f;
+    public float dashTime = 0.4f;
+    public float dashCooldown = 3f;
     public float dashSpeed = 25f;
     private bool canDash = true;
     private bool isDashing = false;

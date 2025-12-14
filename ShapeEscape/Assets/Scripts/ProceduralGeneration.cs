@@ -3,6 +3,12 @@ using System.Collections.Generic;
 
 public class ProceduralGeneration : MonoBehaviour
 {
+    // Difficulty Increase Parameters
+    public float difficulty = 2f;
+    public float difficultyIncreaseRate = 0.05f; // per second
+    public float maxDifficulty = 6f;
+    public float SurvivalTime { get; private set; }
+
     // Reference to the player transform
     public Transform player;
 
@@ -29,11 +35,22 @@ public class ProceduralGeneration : MonoBehaviour
     {
         // Initialize spawn position
         lastSpawnPos = player.position;
+
+        // Reset difficulty
+        difficulty = 2f;
     }
 
     void Update()
     {
+        // Stop if player is dead
         if (PlayerDie.gameOver) return;
+
+        // difficulty increase each second
+        SurvivalTime += Time.deltaTime;
+        if (difficulty < maxDifficulty)
+        {
+            difficulty += difficultyIncreaseRate * Time.deltaTime;
+        }
 
         Vector2 movementDir = GetMovementDirection();
 
@@ -84,7 +101,7 @@ public class ProceduralGeneration : MonoBehaviour
 
     private void SpawnEnemies()
     {
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < difficulty; i++)
         {
             // Spawn idle enemies
             Vector2 randomOffset = Random.insideUnitCircle.normalized * spawnDistanceAhead;
