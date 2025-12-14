@@ -20,6 +20,7 @@ public class Player : MonoBehaviour
     public float dashSpeed = 25f;
     private bool canDash = true;
     private bool isDashing = false;
+    public ParticleSystem dashReady;
     public TrailRenderer dashTrail;
 
     // Movement along X and Y axes
@@ -45,6 +46,7 @@ public class Player : MonoBehaviour
         enemyLayer = LayerMask.NameToLayer("Enemy");
         Physics2D.IgnoreLayerCollision(playerLayer, enemyLayer, false);
         dashTrail.emitting = false;
+        dashReady.Play();
     }
 
     // Gets audioSource on Awake
@@ -59,7 +61,14 @@ public class Player : MonoBehaviour
         if (isDashing) return;
 
         else
-        {   // Movement vector using the X and Y inputs.
+        {
+            // Stop dashReady if player is dead
+            if (rb.simulated == false)
+            {
+                dashReady.Stop();
+            }
+
+            // Movement vector using the X and Y inputs.
             movement = new(movementX, movementY);
 
             // Apply force to the Rigidbody to move the player.
@@ -104,6 +113,7 @@ public class Player : MonoBehaviour
         if (canDash)
         {
             StartCoroutine(Dash());
+            dashReady.Stop();
         }
     }
 
@@ -148,6 +158,7 @@ public class Player : MonoBehaviour
 
         // Dash cooldown
         yield return new WaitForSeconds(dashCooldown);
+        dashReady.Play();
         canDash = true;
     }
 }
