@@ -4,6 +4,9 @@ using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
+    // Sprite Renderer
+    private SpriteRenderer sr;
+
     // Audiosource
     private AudioSource audioSource;
 
@@ -44,6 +47,7 @@ public class Player : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         playerLayer = LayerMask.NameToLayer("Player");
         enemyLayer = LayerMask.NameToLayer("Enemy");
+        sr = GetComponent<SpriteRenderer>();
         Physics2D.IgnoreLayerCollision(playerLayer, enemyLayer, false);
         dashTrail.emitting = false;
         dashReady.Play();
@@ -139,6 +143,11 @@ public class Player : MonoBehaviour
         dashTrail.Clear();
         dashTrail.emitting = true;
 
+        // Change player opacity
+        Color c = sr.color;
+        c.a = 0.6f;
+        sr.color = c;
+
         // Apply force
         rb.linearVelocity = dashDirection * dashSpeed;
         isDashing = false;
@@ -152,6 +161,10 @@ public class Player : MonoBehaviour
         // Disable dash trail
         dashTrail.emitting = false;
         isDashing = false;
+
+        // Revert player opacity
+        c.a = 1;
+        sr.color = c;
 
         // Collision with Enemies back on
         Physics2D.IgnoreLayerCollision(playerLayer, enemyLayer, false);
