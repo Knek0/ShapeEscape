@@ -68,6 +68,7 @@ public class PlayerDie : MonoBehaviour
 
     private void Die()
     {
+        // Plays death sound and starts death routine on death
         audioSource.PlayOneShot(deathSound);
         StartCoroutine(DieCoroutine());
         Object.FindFirstObjectByType<Music>().OnPlayerDeath();

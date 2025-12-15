@@ -6,7 +6,7 @@ public class ProceduralGeneration : MonoBehaviour
     // Difficulty Increase Parameters
     public float difficulty = 2f;
     public float difficultyIncreaseRate = 0.05f; // per second
-    public float maxDifficulty = 6f;
+    public float maxDifficulty = 8f;
     public float SurvivalTime { get; private set; }
 
     // Reference to the player transform
@@ -54,6 +54,7 @@ public class ProceduralGeneration : MonoBehaviour
 
         Vector2 movementDir = GetMovementDirection();
 
+        // Spawn enemies every 3 seconds
         enemyTimer += Time.deltaTime;
 
         if (enemyTimer >= 3)

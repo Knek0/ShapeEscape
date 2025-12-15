@@ -13,8 +13,9 @@ public class camera : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void Update() 
     {
+        // Follow player
         transform.position = player.transform.position + offset;
     }
 }

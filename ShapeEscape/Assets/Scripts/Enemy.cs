@@ -17,6 +17,7 @@ public class Enemy : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        // Get player transform on spawn
         rb = GetComponent<Rigidbody2D>();
         GameObject playerPostion = GameObject.FindGameObjectWithTag("Player");
         player = playerPostion.transform;

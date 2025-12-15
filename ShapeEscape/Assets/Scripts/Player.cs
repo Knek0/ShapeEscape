@@ -16,7 +16,7 @@ public class Player : MonoBehaviour
     // Speed at which the player rotates
     public float rotationSpeed = 5;
 
-    // Dashing
+    // Dashing parameters
     public AudioClip dashSound;
     public float dashTime = 0.4f;
     public float dashCooldown = 3f;
@@ -62,6 +62,7 @@ public class Player : MonoBehaviour
     // FixedUpdate is called once per frame
     private void FixedUpdate()
     {
+        // Dash overrides movement
         if (isDashing) return;
 
         else
@@ -114,7 +115,7 @@ public class Player : MonoBehaviour
     public void OnJump(InputValue value)
     {
         // Dash on space pressed
-        if (canDash)
+        if (canDash && rb.simulated == true)
         {
             StartCoroutine(Dash());
             dashReady.Stop();
